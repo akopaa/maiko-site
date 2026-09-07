@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#5B2B36"/><stop offset="1" stop-color="#BFA081"/></linearGradient></defs>
+<rect width="800" height="500" fill="url(#g)"/>
+<text x="50%" y="46%" text-anchor="middle" font-family="Georgia,serif" font-size="110" fill="#F1E9DF" opacity="0.55">&#9835;</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="sans-serif" font-size="25" fill="#F1E9DF" opacity="0.85">სიახლე 1</text>
+<text x="50%" y="64%" text-anchor="middle" font-family="sans-serif" font-size="17" fill="#F1E9DF" opacity="0.5">ჩაანაცვლეთ ფოტოთი</text>
+</svg>
