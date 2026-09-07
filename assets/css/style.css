@@ -117,7 +117,7 @@ p { font-size: 14px; }
 }
 .header-area-two .single-list .single:hover,
 .header-area-two .single-list .single.active { color: var(--primary-color); }
-.logo-large img { max-width: 64px; }
+.logo-large img { max-width: 160px; }
 .header-lang a span,
 .header-icon-lang a span { color: var(--white); font-size: 15px; display: block; }
 .header-icon-lang a:hover span { color: var(--primary-color); }
@@ -568,7 +568,6 @@ p { font-size: 14px; }
     margin: 0 auto;
 }
 .gallery-content-image { width: 100%; height: 320px; overflow: hidden; border-radius: 16px; }
-.gallery-content > div:nth-child(even) .gallery-content-image { transform: translateY(22px); }
 .gallery-content-image img {
     width: 100%;
     height: 100%;

@@ -1,8 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#0B1424"/><stop offset="1" stop-color="#3A4A6B"/></linearGradient></defs>
+<stop offset="0" stop-color="#0F1830"/><stop offset="1" stop-color="#3A4A6B"/></linearGradient></defs>
 <rect width="800" height="600" fill="url(#g)"/>
-<text x="50%" y="46%" text-anchor="middle" font-family="Georgia,serif" font-size="132" fill="#EDF1F7" opacity="0.5">&#9835;</text>
-<text x="50%" y="58%" text-anchor="middle" font-family="sans-serif" font-size="30" fill="#EDF1F7" opacity="0.85">გალერეა 2</text>
-<text x="50%" y="64%" text-anchor="middle" font-family="sans-serif" font-size="21" fill="#EDF1F7" opacity="0.5">ჩაანაცვლეთ ფოტოთი</text>
+<circle cx="654" cy="114" r="156" fill="#D9A5AE" opacity="0.10"/><circle cx="228" cy="142" r="176" fill="#EDF1F7" opacity="0.10"/><circle cx="89" cy="432" r="158" fill="#D9A5AE" opacity="0.05"/>
+<text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-size="96" fill="#EDF1F7" opacity="0.14">&#9835;</text>
 </svg>

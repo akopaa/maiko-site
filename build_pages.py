@@ -66,9 +66,6 @@ def header(active=""):
                                 {links}
                             </ul>
                             <div class="header-right">
-                                <div class="header-icon-lang d-none d-lg-block">
-                                    <a href="#" title="ინგლისური ვერსია (მალე)"><span>ENG</span></a>
-                                </div>
                                 <button class="mobile-menu-btn" aria-label="მენიუ"><i class="ri-menu-line"></i></button>
                             </div>
                         </div>
