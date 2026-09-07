@@ -1,27 +1,71 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Generates every HTML page of the site. Edit content here, run: python3 build_pages.py"""
+"""Generates every HTML page of the site. Edit content here, run: python3 build_pages.py
+
+HOW CONTENT GATING WORKS
+------------------------
+Sections and menu items appear AUTOMATICALLY when you fill in the data lists
+below (ALBUMS, SONGS, EVENTS, NEWS, GALLERY) or the contact constants
+(PHONE, EMAIL, YOUTUBE, ...). While a list is empty, nothing fake is rendered:
+the section is skipped on the homepage, the menu item is hidden, and the
+standalone page shows an honest "მალე დაემატება" line instead of sample cards.
+Never put sample/placeholder entries in these lists on a deployed site.
+"""
 
 NAME = "მაიკო კაჭკაჭიშვილი"
 ROLE = "კომპოზიტორი"
 NAME_GEN = "მაიკო კაჭკაჭიშვილის"
 NAME_TAN = "მაიკო კაჭკაჭიშვილთან"
 NAME_DAT = "მაიკო კაჭკაჭიშვილს"
-FB = "https://www.facebook.com/profile.php?id=61577330154357"
-PHONE = "+995 5XX XX XX XX"
-EMAIL = "info@example.ge"
 API = "https://br-young-dawn-b1rhi5yl-api.compute.c-5.eu-central-1.aws.neon.tech"
 
-MENU = [
-    ("biografia.html", "ბიოგრაფია"),
-    ("albomebi.html", "ალბომები"),
-    ("shemokmedeba.html", "შემოქმედება"),
-    ("gonisdziebebi.html", "ღონისძიებები"),
-    ("registracia.html", "რეგისტრაცია"),
-    ("media.html", "მედია"),
-    ("tanamshromloba.html", "თანამშრომლობა"),
-    ("kontakti.html", "კონტაქტი"),
-]
+# ---------------- real contacts (empty string = hidden everywhere) ----------------
+FB = "https://www.facebook.com/profile.php?id=61577330154357"
+PHONE = ""      # e.g. "+995 599 12 34 56"
+EMAIL = ""      # e.g. "info@maiko.ge"
+YOUTUBE = ""    # channel URL
+INSTAGRAM = ""  # profile URL
+TIKTOK = ""     # profile URL
+
+# ---------------- real content (EMPTY until Maiko provides it) ----------------
+# ALBUMS: (image path in img/albums/, title, featured track "Song — Artist", audio file path or "")
+ALBUMS = []
+# Example entry (do NOT ship samples):
+# ALBUMS = [("img/albums/avtoportreti.webp", "ალბომის სახელი (წელი)", "სიმღერა — შემსრულებელი", "files/music/track1.mp3")]
+
+# SONGS: (title "Song — Artist", album number as str, audio file path or "")
+SONGS = []
+# SONGS = [("სიმღერა — შემსრულებელი", "1", "files/music/track1.mp3")]
+
+# EVENTS: (image path, title, date "12 ოქტომბერი 2026", place, link or "")
+EVENTS = []
+# EVENTS = [("img/events/koncerti.webp", "საავტორო საღამო", "12 ოქტომბერი 2026", "თბილისი, დარბაზი", "")]
+
+# NEWS: (image path, title, date, link or "")
+NEWS = []
+# NEWS = [("img/media/n1.webp", "სტატიის სათაური", "3 მაისი 2026", "https://...")]
+
+# GALLERY: list of image paths in img/gallery/
+GALLERY = []
+# GALLERY = ["img/gallery/g1.webp", "img/gallery/g2.webp"]
+
+# HERO_PHOTO: real portrait for the homepage hero ("" = text-only hero, no gray placeholder)
+HERO_PHOTO = ""
+
+# ---------------- menu: only pages that have real content ----------------
+MENU = [("biografia.html", "ბიოგრაფია")]
+if ALBUMS:
+    MENU.append(("albomebi.html", "ალბომები"))
+if SONGS:
+    MENU.append(("shemokmedeba.html", "შემოქმედება"))
+if EVENTS:
+    MENU.append(("gonisdziebebi.html", "ღონისძიებები"))
+MENU.append(("registracia.html", "რეგისტრაცია"))
+if NEWS:
+    MENU.append(("media.html", "მედია"))
+MENU.append(("tanamshromloba.html", "თანამშრომლობა"))
+MENU.append(("kontakti.html", "კონტაქტი"))
+
 
 def head(title, desc):
     return f'''<!DOCTYPE html>
@@ -45,6 +89,7 @@ def head(title, desc):
 </head>
 <body>
 '''
+
 
 def header(active=""):
     links = "\n".join(
@@ -83,6 +128,24 @@ def header(active=""):
 <main>
 '''
 
+
+# ---------------- footer: only real links ----------------
+def _social(href, icon, external=True):
+    tgt = ' target="_blank"' if external else ''
+    return f'<li class="list-icon"><a href="{href}"{tgt} class="list"><i class="{icon}"></i></a></li>'
+
+_socials = [_social(FB, "ri-facebook-fill")]
+if YOUTUBE:
+    _socials.append(_social(YOUTUBE, "ri-youtube-fill"))
+if INSTAGRAM:
+    _socials.append(_social(INSTAGRAM, "ri-instagram-fill"))
+if TIKTOK:
+    _socials.append(_social(TIKTOK, "ri-tiktok-fill"))
+if PHONE:
+    _socials.append(_social("tel:" + PHONE.replace(" ", ""), "ri-phone-fill", external=False))
+if EMAIL:
+    _socials.append(_social("mailto:" + EMAIL, "ri-mail-send-line", external=False))
+
 FOOTER = f'''</main>
 <footer>
 <div class="footer-wrapper footer-bg-one">
@@ -96,12 +159,7 @@ FOOTER = f'''</main>
                         </div>
                         <div class="footer-social-section">
                             <ul class="footer-social-lists">
-                                <li class="list-icon"><a href="{FB}" target="_blank" class="list"><i class="ri-facebook-fill"></i></a></li>
-                                <li class="list-icon"><a href="#" target="_blank" class="list"><i class="ri-youtube-fill"></i></a></li>
-                                <li class="list-icon"><a href="#" target="_blank" class="list"><i class="ri-tiktok-fill"></i></a></li>
-                                <li class="list-icon"><a href="#" target="_blank" class="list"><i class="ri-instagram-fill"></i></a></li>
-                                <li class="list-icon"><a href="tel:{PHONE.replace(' ', '')}" class="list"><i class="ri-phone-fill"></i></a></li>
-                                <li class="list-icon"><a href="mailto:{EMAIL}" class="list"><i class="ri-mail-send-line"></i></a></li>
+                                {"".join(_socials)}
                             </ul>
                         </div>
                         <div class="footer-menu">
@@ -125,7 +183,8 @@ FOOTER = f'''</main>
 </html>
 '''
 
-def breadcrumb(title, small=False):
+
+def page_head_block(title, small=False):
     tag = "h2" if small else "h1"
     return f'''<section class="page-head">
     <div class="container">
@@ -136,44 +195,26 @@ def breadcrumb(title, small=False):
 </section>
 '''
 
-# ---------------- sample data (replace with real content) ----------------
-ALBUMS = [
-    ("album-1", "ალბომი პირველი (წელი)", "სანიმუშო სიმღერა — შემსრულებელი"),
-    ("album-2", "ალბომი მეორე (წელი)", "სანიმუშო სიმღერა — შემსრულებელი"),
-    ("album-3", "ალბომი მესამე (წელი)", "სანიმუშო სიმღერა — შემსრულებელი"),
-    ("album-4", "საუკეთესო ნაწარმოებები", "სანიმუშო სიმღერა — შემსრულებელი"),
-]
-SONGS = [
-    ("სიმღერა პირველი — შემსრულებელი", "1"),
-    ("სიმღერა მეორე — შემსრულებელი", "1"),
-    ("სიმღერა მესამე — შემსრულებელი", "2"),
-    ("სიმღერა მეოთხე — შემსრულებელი", "2"),
-    ("სიმღერა მეხუთე — შემსრულებელი", "3"),
-    ("სიმღერა მეექვსე — შემსრულებელი", "4"),
-]
-EVENTS = [
-    ("event-1", "საავტორო საღამო", "თარიღი მიუთითეთ", "თბილისი, დარბაზი"),
-    ("event-2", "აკადემიის მოსწავლეთა კონცერტი", "თარიღი მიუთითეთ", "თბილისი, დარბაზი"),
-    ("event-3", "საქველმოქმედო კონცერტი", "თარიღი მიუთითეთ", "ქალაქი, დარბაზი"),
-    ("event-4", "შემოქმედებითი შეხვედრა", "თარიღი მიუთითეთ", "ქალაქი, დარბაზი"),
-]
-NEWS = [
-    ("n1", "სტატიის სათაური — ჩაანაცვლეთ რეალური სიახლით", "თარიღი"),
-    ("n2", "ინტერვიუს სათაური — ჩაანაცვლეთ რეალური სიახლით", "თარიღი"),
-    ("n3", "სიახლის სათაური — ჩაანაცვლეთ რეალური სიახლით", "თარიღი"),
-    ("n4", "სტატიის სათაური — ჩაანაცვლეთ რეალური სიახლით", "თარიღი"),
-    ("n5", "ინტერვიუს სათაური — ჩაანაცვლეთ რეალური სიახლით", "თარიღი"),
-    ("n6", "სიახლის სათაური — ჩაანაცვლეთ რეალური სიახლით", "თარიღი"),
-]
 
-def album_slide(img, title, track):
-    return f'''<div class="swiper-slide">
-    <div class="albums-card-wrapper">
-        <div class="albums-img-card">
-            <a href="albomi-detali.html"><img src="img/albums/{img}.svg" alt="{title}"></a>
+def coming_soon(text="მასალა მალე დაემატება"):
+    return f'''<section class="section-padding">
+    <div class="container">
+        <div class="soon-box">
+            <i class="ri-music-2-line"></i>
+            <p>{text}</p>
+            <a href="{FB}" target="_blank" class="btn-ghost">სიახლეები Facebook-ზე</a>
         </div>
     </div>
-    <div class="audio-player-bar" data-audio="">
+</section>
+'''
+
+
+# ---------------- content partials (render only with real data) ----------------
+def album_slide(img, title, track, audio):
+    player = ""
+    if audio:
+        player = f'''
+    <div class="audio-player-bar" data-audio="{audio}">
         <div class="player-info">
             <h2 class="track-name">{title}</h2>
             <h3 class="artist-name">{track}</h3>
@@ -185,16 +226,22 @@ def album_slide(img, title, track):
         </div>
         <div class="time-more">
             <div class="player-time">00:00 / 00:00</div>
-            <a href="albomi-detali.html" class="btn-more outline-pill-btn">მეტის ნახვა</a>
+        </div>
+    </div>'''
+    return f'''<div class="swiper-slide">
+    <div class="albums-card-wrapper">
+        <div class="albums-img-card">
+            <img src="{img}" alt="{title}">
         </div>
     </div>
+    <h3 class="album-caption">{title}</h3>{player}
 </div>
 '''
 
-def song_item(title, album_id, idx=0):
-    return f'''<li class="song-item" data-audio="" data-albums-id="{album_id}" data-title="{title}">
-    <div class="song-main">
-        <span class="song-index">{idx:02d}</span>
+
+def song_item(title, album_id, audio, idx=0):
+    if audio:
+        controls = f'''
         <button class="play-btn"><i class="ri-play-fill"></i></button>
         <div class="song-info">
             <h2 class="song-title">{title}</h2>
@@ -207,48 +254,64 @@ def song_item(title, album_id, idx=0):
         <div class="volume-box">
             <i class="ri-volume-up-line"></i>
             <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5">
-        </div>
+        </div>'''
+    else:
+        controls = f'''
+        <div class="song-info"><h2 class="song-title">{title}</h2></div>'''
+    return f'''<li class="song-item" data-audio="{audio}" data-albums-id="{album_id}" data-title="{title}">
+    <div class="song-main">
+        <span class="song-index">{idx:02d}</span>{controls}
     </div>
 </li>
 '''
 
-def event_card(img, title, date, place, col='col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12'):
+
+def event_card(img, title, date, place, link, col='col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12'):
+    img_html = f'<img src="{img}" alt="{title}">'
+    if link:
+        img_block = f'<a href="{link}" class="events-image zoomImg">{img_html}</a>'
+        title_block = f'<h3><a href="{link}">{title}</a></h3>'
+    else:
+        img_block = f'<div class="events-image zoomImg">{img_html}</div>'
+        title_block = f'<h3>{title}</h3>'
     return f'''<div class="{col}">
     <div class="events-card fade-up">
-        <a href="article.html" class="events-image zoomImg">
-            <img src="img/events/{img}.svg" alt="{title}">
-        </a>
-        <h3><a href="article.html">{title}</a></h3>
+        {img_block}
+        {title_block}
         <span><i class="ri-calendar-2-fill"></i> {date}</span>
         <address><i class="ri-map-pin-line"></i> {place}</address>
     </div>
 </div>
 '''
 
-def news_card(img, title, date):
+
+def news_card(img, title, date, link):
+    open_a = f'<a href="{link}" target="_blank">' if link else "<div>"
+    close_a = "</a>" if link else "</div>"
     return f'''<div class="col-12 col-md-6 col-lg-4">
     <div class="news-card h-100 fade-up">
-        <a href="article.html">
+        {open_a}
             <div class="news-img zoomImg">
-                <img src="img/media/{img}.svg" alt="{title}">
+                <img src="{img}" alt="{title}">
                 <div class="news-badge"><span class="date">{date}</span></div>
             </div>
-        </a>
+        {close_a}
         <div class="news-content">
-            <a href="article.html"><h2 class="news-title">{title}</h2></a>
+            <h2 class="news-title">{title}</h2>
         </div>
     </div>
 </div>
 '''
 
+
 pages = {}
 
 # ============================ INDEX ============================
-pages["index.html"] = (
-    head(f"{NAME} — {ROLE} და მუსიკალური აკადემია | ოფიციალური საიტი",
-         f"{NAME}-ის ოფიციალური ვებგვერდი. ბიოგრაფია, შემოქმედება, მუსიკალური აკადემია და პროექტები.")
-    + header()
-    + f'''<section class="hero-split">
+# Launch version leads with what is REAL: who Maiko is, the academy,
+# registration, and the Facebook page. Data-gated sections join automatically.
+
+if HERO_PHOTO:
+    hero = f'''<section class="hero-split">
     <div class="container">
         <div class="hero-grid">
             <div class="hero-text">
@@ -258,119 +321,156 @@ pages["index.html"] = (
                 <p>კომპოზიტორი და მუსიკალური აკადემიის დამფუძნებელი</p>
                 <div class="hero-actions">
                     <a href="registracia.html" class="btn-solid">აკადემიაში რეგისტრაცია</a>
-                    <a href="shemokmedeba.html" class="btn-ghost">შემოქმედება</a>
+                    <a href="biografia.html" class="btn-ghost">ბიოგრაფია</a>
                 </div>
             </div>
             <div class="hero-portrait">
-                <img src="img/slider/cover-1.svg" alt="{NAME}">
+                <img src="{HERO_PHOTO}" alt="{NAME}">
             </div>
         </div>
     </div>
 </section>
+'''
+else:
+    hero = f'''<section class="hero-split hero-center">
+    <div class="container">
+        <div class="hero-text">
+            <span class="overline">{ROLE}</span>
+            <h1>მაიკო კაჭკაჭიშვილი</h1>
+            <div class="head-rule"></div>
+            <p>კომპოზიტორი და მუსიკალური აკადემიის დამფუძნებელი</p>
+            <div class="hero-actions">
+                <a href="registracia.html" class="btn-solid">აკადემიაში რეგისტრაცია</a>
+                <a href="biografia.html" class="btn-ghost">ბიოგრაფია</a>
+            </div>
+        </div>
+    </div>
+</section>
+'''
 
-<section class="albums-area-two section-padding">
+ACADEMY_DIRECTIONS = [
+    ("ri-team-line", "ჯგუფური ვოკალი"),
+    ("ri-mic-line", "ინდივიდუალური ვოკალი"),
+    ("ri-music-2-line", "ხალხური სიმღერა"),
+    ("ri-keyboard-line", "ფორტეპიანო"),
+    ("ri-quill-pen-line", "კომპოზიცია"),
+]
+academy_section = f'''<section class="academy-area section-padding">
+    <div class="container">
+        <div class="section-head">
+            <span class="overline">მუსიკალური აკადემია</span>
+            <h2 class="section-title">მიმდინარეობს პირველი ნაკადის მიღება</h2>
+        </div>
+        <p class="academy-lead">აკადემიაში სწავლება მიმდინარეობს შემდეგ მიმართულებებზე:</p>
+        <div class="dir-grid">
+            {"".join(f'<div class="dir-item"><i class="{icon}"></i><span>{label}</span></div>' for icon, label in ACADEMY_DIRECTIONS)}
+        </div>
+        <a href="registracia.html" class="btn-solid">დარეგისტრირდი პირველ ნაკადში</a>
+    </div>
+</section>
+'''
+
+fb_section = f'''<section class="fb-strip section-padding">
+    <div class="container">
+        <div class="fb-strip-inner">
+            <h2>სიახლეები და ვიდეოები ქვეყნდება ჩვენს Facebook გვერდზე</h2>
+            <a href="{FB}" target="_blank" class="btn-ghost"><i class="ri-facebook-fill"></i> გამოგვყევით</a>
+        </div>
+    </div>
+</section>
+'''
+
+albums_section = ""
+if ALBUMS:
+    albums_section = f'''<section class="albums-area-two section-padding">
     <div class="section-head container">
         <span class="overline">დისკოგრაფია</span>
         <h2 class="section-title">ალბომები</h2>
     </div>
     <div class="swiper albumsSwiper-active">
         <div class="swiper-wrapper">
-{"".join(album_slide(i, t, tr) for i, t, tr in ALBUMS)}
+{"".join(album_slide(*a) for a in ALBUMS)}
         </div>
         <div class="swiper-pagination"></div>
     </div>
+    <div class="text-center"><a href="albomebi.html" class="btn-ghost">ყველა ალბომი</a></div>
 </section>
+'''
 
-<section class="songs-area section-padding">
+songs_section = ""
+if SONGS:
+    songs_section = f'''<section class="songs-area section-padding">
     <div class="container">
         <div class="section-head">
             <span class="overline">მუსიკა</span>
             <h2 class="section-title">შემოქმედება</h2>
         </div>
-        <div class="row">
-            <div class="col-xl-4">
-                <div class="songs-content fade-up">
-                    <img src="img/about.svg" alt="შემოქმედება">
-                    <div class="songs-detail">
-                        <h1>შემოქმედება</h1>
-                        <div class="content-text">
-                            <p>ინდივიდუალური კომპოზიციური ხელწერა, დასამახსოვრებელი მელოდიები და ჟანრობრივი მრავალფეროვნება</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-8">
-                <div class="songs fade-up">
-                    <ul>
-{"".join(song_item(t, a, i) for i, (t, a) in enumerate(SONGS, 1))}
-                    </ul>
-                </div>
-            </div>
+        <div class="songs fade-up">
+            <ul>
+{"".join(song_item(t, a, au, i) for i, (t, a, au) in enumerate(SONGS[:6], 1))}
+            </ul>
         </div>
-    </div>
-</section>
-
-<section class="events-area section-padding position-relative">
-    <div class="container">
-        <div class="row g-4 align-items-center">
-            <div class="col-xxl-3 col-md-4 col-sm-6">
-                <div class="events-card-content fade-up">
-                    <h2>ღონისძიებები</h2>
-                    <div class="content-text"><p>მიმდინარე და დაგეგმილი ღონისძიებები</p></div>
-                    <a href="gonisdziebebi.html" class="btn outline-pill-btn btn-rm">მეტის ნახვა</a>
-                </div>
-            </div>
-            <div class="col-xxl-9 col-md-8 col-sm-6">
-                <div class="swiper eventsSwiper-active">
-                    <div class="swiper-wrapper">
-{"".join('<div class="swiper-slide">' + event_card(i, t, d, p, col='') + '</div>' for i, t, d, p in EVENTS)}
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="gallery-area section-padding">
-    <div class="gallery-content">
-{"".join(f'<div><div class="gallery-content-image"><img src="img/gallery/g{i}.svg" alt="გალერეა"></div></div>' for i in range(1, 7))}
+        <div class="text-center mt-4"><a href="shemokmedeba.html" class="btn-ghost">ყველა სიმღერა</a></div>
     </div>
 </section>
 '''
+
+events_section = ""
+if EVENTS:
+    events_section = f'''<section class="events-area section-padding position-relative">
+    <div class="container">
+        <div class="section-head">
+            <span class="overline">კონცერტები</span>
+            <h2 class="section-title">ღონისძიებები</h2>
+        </div>
+        <div class="row g-4">
+{"".join(event_card(*e) for e in EVENTS[:4])}
+        </div>
+        <div class="text-center mt-4"><a href="gonisdziebebi.html" class="btn-ghost">სრული განრიგი</a></div>
+    </div>
+</section>
+'''
+
+gallery_section = ""
+if GALLERY:
+    gallery_section = f'''<section class="gallery-area section-padding">
+    <div class="gallery-content">
+{"".join(f'<div><div class="gallery-content-image"><img src="{g}" alt="{NAME}"></div></div>' for g in GALLERY)}
+    </div>
+</section>
+'''
+
+pages["index.html"] = (
+    head(f"{NAME} — {ROLE} და მუსიკალური აკადემია | ოფიციალური საიტი",
+         f"{NAME_GEN} ოფიციალური ვებგვერდი — მუსიკალური აკადემია და რეგისტრაცია.")
+    + header()
+    + hero
+    + academy_section
+    + albums_section
+    + songs_section
+    + events_section
+    + gallery_section
+    + fb_section
     + FOOTER)
 
 # ============================ BIOGRAPHY ============================
+# Only facts we actually have. Extend when Maiko provides her CV:
+#   <p><strong>განათლება:</strong></p><ul><li>წლები — სასწავლებელი — განხრა</li></ul>
+#   <p><strong>სამუშაო გამოცდილება:</strong></p><ul>...</ul>
+#   <p><strong>ჯილდოები:</strong></p><ul>...</ul>
 pages["biografia.html"] = (
-    head(f"ბიოგრაფია — {NAME}", f"{NAME_GEN} ბიოგრაფია, განათლება და მოღვაწეობა.")
+    head(f"ბიოგრაფია — {NAME}", f"{NAME_GEN} ბიოგრაფია.")
     + header("biografia.html")
-    + breadcrumb(f"{NAME} — {ROLE}", small=True)
+    + page_head_block("ბიოგრაფია")
     + f'''<section class="details-area section-padding">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xxl-8 col-xl-8">
                 <div class="blog-details-section">
-                    <h1 class="common-title">{NAME} — {ROLE} და პედაგოგი</h1>
                     <div class="content-text">
-                        <p>[აქ ჩაწერეთ შესავალი — სად და როდის დაიბადა, როგორ დაიწყო მუსიკალური გზა.]</p>
-                        <p><strong>განათლება:</strong></p>
-                        <ul>
-                            <li>[წლები] — მუსიკალური სკოლა — [განხრა];</li>
-                            <li>[წლები] — სამუსიკო სასწავლებელი — [განყოფილება];</li>
-                            <li>[წლები] — კონსერვატორია — [ფაკულტეტი].</li>
-                        </ul>
-                        <p><strong>სამუშაო გამოცდილება:</strong></p>
-                        <ul>
-                            <li>[წლები] — [პოზიცია / პროექტი];</li>
-                            <li>[წლები] — [პოზიცია / პროექტი];</li>
-                            <li>[წლიდან] — საკუთარი მუსიკალური აკადემიის დამფუძნებელი და ხელმძღვანელი.</li>
-                        </ul>
-                        <p><strong>ჯილდოები და მიღწევები:</strong></p>
-                        <ul>
-                            <li>[წელი] — [ჯილდო / წოდება];</li>
-                            <li>[წელი] — [ჯილდო / წოდება].</li>
-                        </ul>
-                        <p>[დასკვნითი აბზაცი — შემოქმედებითი კრედო, მიმდინარე საქმიანობა, აკადემია.]</p>
+                        <p>{NAME} — ქართველი კომპოზიტორი და პედაგოგი, საკუთარი მუსიკალური აკადემიის დამფუძნებელი.</p>
+                        <p>აკადემიაში სწავლება მიმდინარეობს ვოკალის (ჯგუფური და ინდივიდუალური), ხალხური სიმღერის, ფორტეპიანოსა და კომპოზიციის მიმართულებებით. ამჟამად მიმდინარეობს პირველი ნაკადის მიღება — <a href="registracia.html">დარეგისტრირდით აქ</a>.</p>
+                        <p>სიახლეები და ვიდეოები ქვეყნდება <a href="{FB}" target="_blank">Facebook გვერდზე</a>.</p>
                     </div>
                 </div>
             </div>
@@ -381,28 +481,26 @@ pages["biografia.html"] = (
     + FOOTER)
 
 # ============================ ALBUMS PAGE ============================
-pages["albomebi.html"] = (
-    head(f"ალბომები — {NAME}", f"{NAME_GEN} ალბომები და ჩანაწერები.")
-    + header("albomebi.html")
-    + breadcrumb("ალბომები")
-    + f'''<section class="albums-area-two section-padding">
+if ALBUMS:
+    body = f'''<section class="albums-area-two section-padding">
     <div class="swiper albumsSwiper-active">
         <div class="swiper-wrapper">
-{"".join(album_slide(i, t, tr) for i, t, tr in ALBUMS)}
+{"".join(album_slide(*a) for a in ALBUMS)}
         </div>
         <div class="swiper-pagination"></div>
     </div>
 </section>
 '''
-    + FOOTER)
+else:
+    body = coming_soon("ალბომები მალე დაემატება")
+pages["albomebi.html"] = (
+    head(f"ალბომები — {NAME}", f"{NAME_GEN} ალბომები.")
+    + header("albomebi.html") + page_head_block("ალბომები") + body + FOOTER)
 
 # ============================ SONGS PAGE ============================
-options = "".join(f'<option value="{i}">{t}</option>' for i, (_, t, _tr) in enumerate(ALBUMS, 1))
-pages["shemokmedeba.html"] = (
-    head(f"შემოქმედება — {NAME}", f"{NAME_GEN} სიმღერები და ნაწარმოებები — მოისმინეთ ონლაინ.")
-    + header("shemokmedeba.html")
-    + breadcrumb("შემოქმედება")
-    + f'''<section class="songs-area section-padding">
+if SONGS:
+    options = "".join(f'<option value="{i}">{t}</option>' for i, (_img, t, _tr, _au) in enumerate(ALBUMS, 1))
+    body = f'''<section class="songs-area section-padding">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-9">
@@ -420,7 +518,7 @@ pages["shemokmedeba.html"] = (
                 </div>
                 <div class="songs song-detail">
                     <ul>
-{"".join(song_item(t, a, i) for i, (t, a) in enumerate(SONGS, 1))}
+{"".join(song_item(t, a, au, i) for i, (t, a, au) in enumerate(SONGS, 1))}
                     </ul>
                 </div>
             </div>
@@ -428,22 +526,27 @@ pages["shemokmedeba.html"] = (
     </div>
 </section>
 '''
-    + FOOTER)
+else:
+    body = coming_soon("სიმღერები მალე დაემატება")
+pages["shemokmedeba.html"] = (
+    head(f"შემოქმედება — {NAME}", f"{NAME_GEN} სიმღერები და ნაწარმოებები.")
+    + header("shemokmedeba.html") + page_head_block("შემოქმედება") + body + FOOTER)
 
 # ============================ EVENTS PAGE ============================
-pages["gonisdziebebi.html"] = (
-    head(f"ღონისძიებები — {NAME}", f"{NAME_GEN} კონცერტები და ღონისძიებები.")
-    + header("gonisdziebebi.html")
-    + breadcrumb("ღონისძიებები")
-    + f'''<section class="events-area section-padding position-relative">
+if EVENTS:
+    body = f'''<section class="events-area section-padding position-relative">
     <div class="container">
         <div class="row g-4">
-{"".join(event_card(i, t, d, p) for i, t, d, p in EVENTS)}
+{"".join(event_card(*e) for e in EVENTS)}
         </div>
     </div>
 </section>
 '''
-    + FOOTER)
+else:
+    body = coming_soon("ღონისძიებები მალე გამოცხადდება")
+pages["gonisdziebebi.html"] = (
+    head(f"ღონისძიებები — {NAME}", f"{NAME_GEN} კონცერტები და ღონისძიებები.")
+    + header("gonisdziebebi.html") + page_head_block("ღონისძიებები") + body + FOOTER)
 
 # ============================ REGISTRATION (ACADEMY) ============================
 DIRECTIONS_UI = [
@@ -550,19 +653,20 @@ pages["registracia.html"] = (
     + FOOTER)
 
 # ============================ MEDIA ============================
-pages["media.html"] = (
-    head(f"მედია — {NAME}", f"სიახლეები და ინტერვიუები — {NAME}.")
-    + header("media.html")
-    + breadcrumb("მედია")
-    + f'''<section class="news-area section-padding">
+if NEWS:
+    body = f'''<section class="news-area section-padding">
     <div class="container">
         <div class="row g-4">
-{"".join(news_card(i, t, d) for i, t, d in NEWS)}
+{"".join(news_card(*n) for n in NEWS)}
         </div>
     </div>
 </section>
 '''
-    + FOOTER)
+else:
+    body = coming_soon("სტატიები და ინტერვიუები მალე დაემატება")
+pages["media.html"] = (
+    head(f"მედია — {NAME}", f"სიახლეები და ინტერვიუები — {NAME}.")
+    + header("media.html") + page_head_block("მედია") + body + FOOTER)
 
 # ============================ COLLABORATION ============================
 def wrap_input(name, ph, typ="text", textarea=False):
@@ -579,7 +683,7 @@ def wrap_input(name, ph, typ="text", textarea=False):
 pages["tanamshromloba.html"] = (
     head(f"თანამშრომლობა — {NAME}", f"დაუკავშირდით {NAME_DAT} თანამშრომლობისთვის.")
     + header("tanamshromloba.html")
-    + breadcrumb("თანამშრომლობა")
+    + page_head_block("თანამშრომლობა")
     + f'''<section class="cooperation-area section-padding">
     <div class="container">
         <div class="row g-4 justify-content-center align-items-center">
@@ -588,8 +692,7 @@ pages["tanamshromloba.html"] = (
                     <h1 class="title">{NAME_TAN} თანამშრომლობისთვის შეავსეთ ფორმა</h1>
                     <div class="content-text">
                         <p>საქმიანი კოლაბორაციისთვის, საავტორო უფლებების ან ღონისძიების დაგეგმვის მიზნით, გთხოვთ, დეტალურად მიუთითოთ თქვენი მოთხოვნა მოცემულ ველებში.</p>
-                        <p>ჩვენი გუნდი უმოკლეს დროში განიხილავს თქვენს განაცხადს და დაგიკავშირდებათ.</p>
-                        <p><strong>პროფესიონალიზმი და ხარისხი ჩვენი პრიორიტეტია.</strong></p>
+                        <p>თქვენს განაცხადს განვიხილავთ და დაგიკავშირდებით.</p>
                     </div>
                 </div>
             </div>
@@ -621,140 +724,62 @@ pages["tanamshromloba.html"] = (
     + FOOTER)
 
 # ============================ CONTACT ============================
+contact_cards = ""
+if PHONE:
+    contact_cards += f'''<div class="contact-card">
+        <div class="circle-icon"><i class="ri-phone-fill"></i></div>
+        <a href="tel:{PHONE.replace(' ', '')}"><p>{PHONE}</p></a>
+    </div>'''
+if EMAIL:
+    contact_cards += f'''<div class="contact-card">
+        <div class="circle-icon"><i class="ri-mail-send-line"></i></div>
+        <a href="mailto:{EMAIL}"><p>{EMAIL}</p></a>
+    </div>'''
+
+social_circles = f'''<div class="social-content fb">
+        <span>Facebook</span>
+        <a href="{FB}" target="_blank" class="social">
+            <i class="ri-facebook-line"></i>
+            <aside>მუსიკალური აკადემია</aside>
+        </a>
+    </div>'''
+if INSTAGRAM:
+    social_circles += f'''<div class="social-content ig">
+        <span>Instagram</span>
+        <a href="{INSTAGRAM}" target="_blank" class="social"><i class="ri-instagram-line"></i></a>
+    </div>'''
+if YOUTUBE:
+    social_circles += f'''<div class="social-content yt">
+        <span>Youtube</span>
+        <a href="{YOUTUBE}" target="_blank" class="social"><i class="ri-youtube-line"></i></a>
+    </div>'''
+if TIKTOK:
+    social_circles += f'''<div class="social-content tt">
+        <span>TikTok</span>
+        <a href="{TIKTOK}" target="_blank" class="social"><i class="ri-tiktok-line"></i></a>
+    </div>'''
+
+contact_side = ""
+if contact_cards:
+    contact_side = f'<div class="col-xxl-3 col-xl-3"><div class="contact-content">{contact_cards}</div></div>'
+social_col = "col-xxl-9 col-xl-9" if contact_cards else "col-12"
+
 pages["kontakti.html"] = (
-    head(f"კონტაქტი — {NAME}", f"დაუკავშირდით {NAME_DAT} — ტელეფონი, ელფოსტა, სოციალური ქსელები.")
+    head(f"კონტაქტი — {NAME}", f"დაუკავშირდით {NAME_DAT}.")
     + header("kontakti.html")
-    + breadcrumb("კონტაქტი")
+    + page_head_block("კონტაქტი")
     + f'''<section class="contact-area section-padding">
     <div class="container">
         <div class="row g-4 justify-content-center align-items-center">
-            <div class="col-xxl-3 col-xl-3">
-                <div class="contact-content">
-                    <div class="contact-card">
-                        <div class="circle-icon"><i class="ri-phone-fill"></i></div>
-                        <a href="tel:{PHONE.replace(' ', '')}"><p>{PHONE}</p></a>
-                    </div>
-                    <div class="contact-card">
-                        <div class="circle-icon"><i class="ri-mail-send-line"></i></div>
-                        <a href="mailto:{EMAIL}"><p>{EMAIL}</p></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-9 col-xl-9">
+            {contact_side}
+            <div class="{social_col}">
                 <div class="contact-social">
-                    <div class="social-content fb">
-                        <span>Facebook</span>
-                        <a href="{FB}" target="_blank" class="social">
-                            <i class="ri-facebook-line"></i>
-                            <small>followers</small>
-                            <aside>მუსიკალური აკადემია</aside>
-                        </a>
-                    </div>
-                    <div class="social-content ig">
-                        <span>Instagram</span>
-                        <a href="#" target="_blank" class="social">
-                            <i class="ri-instagram-line"></i>
-                            <small>followers</small>
-                            <aside>[პროფილი]</aside>
-                        </a>
-                    </div>
-                    <div class="social-content yt">
-                        <span>Youtube</span>
-                        <a href="#" target="_blank" class="social">
-                            <i class="ri-youtube-line"></i>
-                            <small>subscribers</small>
-                            <aside>[არხი]</aside>
-                        </a>
-                    </div>
-                    <div class="social-content tt">
-                        <span>TikTok</span>
-                        <a href="#" target="_blank" class="social">
-                            <i class="ri-tiktok-line"></i>
-                            <small>followers</small>
-                            <aside>[პროფილი]</aside>
-                        </a>
-                    </div>
+                    {social_circles}
                 </div>
             </div>
         </div>
-    </div>
-</section>
-'''
-    + FOOTER)
-
-# ============================ ALBUM DETAIL TEMPLATE ============================
-pages["albomi-detali.html"] = (
-    head(f"ალბომი — {NAME}", "ალბომის დეტალური გვერდი — შეცვალეთ კონკრეტული ალბომის ინფორმაციით.")
-    + header()
-    + breadcrumb("ალბომის სახელი (წელი)", small=True)
-    + f'''<section class="details-area section-padding">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xxl-12">
-                <div class="row g-4 align-items-start">
-                    <div class="col-xl-6 col-lg-12 order-xl-first">
-                        <div class="albums-card-wrapper mx-auto">
-                            <div class="albums-img-card">
-                                <img src="img/albums/album-1.svg" alt="ალბომი">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-12">
-                        <div class="details-content">
-                            <span><i class="ri-calendar-2-fill"></i> გამოშვების წელი: [წელი]</span>
-                            <span><i class="ri-music-2-fill"></i> სიმღერების რაოდენობა: [N]</span>
-                        </div>
-                        <div class="content-text">
-                            <p>[ალბომის აღწერა — ისტორია, თანამონაწილეები, საინტერესო ფაქტები.]</p>
-                        </div>
-                        <div class="songs song-detail">
-                            <ul>
-{"".join(song_item(t, a, i) for i, (t, a) in enumerate(SONGS[:4], 1))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-'''
-    + FOOTER)
-
-# ============================ ARTICLE TEMPLATE ============================
-pages["article.html"] = (
-    head(f"სტატია — {NAME}", "სტატიის შაბლონი — შეცვალეთ კონკრეტული სტატიის შინაარსით.")
-    + header()
-    + breadcrumb("სტატიის სათაური", small=True)
-    + f'''<section class="details-area section-padding">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xxl-12">
-                <div class="blog-details-section">
-                    <h1 class="common-title">სტატიის სათაური</h1>
-                    <div class="details-content">
-                        <span><i class="ri-calendar-2-fill"></i> [თარიღი]</span>
-                        <span><i class="ri-map-pin-line"></i> [ადგილი]</span>
-                    </div>
-                    <div class="text-content-side image-right">
-                        <div class="content-text">
-                            <p>[სტატიის ძირითადი ტექსტი — პირველი აბზაცი.]</p>
-                            <p>[მეორე აბზაცი.]</p>
-                            <p>[მესამე აბზაცი.]</p>
-                        </div>
-                        <div class="text-content-image">
-                            <img src="img/media/n1.svg" alt="სტატიის ფოტო">
-                        </div>
-                    </div>
-                    <div class="tag-wrapper">
-                        <div class="tag-list">
-                            <span class="sub-tag">#კომპოზიტორი</span>
-                            <span class="sub-tag">#მუსიკა</span>
-                            <span class="sub-tag">#აკადემია</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="contact-note">
+            <p>წერილობითი მოთხოვნისთვის ისარგებლეთ <a href="tanamshromloba.html">თანამშრომლობის ფორმით</a> — განაცხადს განვიხილავთ და დაგიკავშირდებით.</p>
         </div>
     </div>
 </section>
