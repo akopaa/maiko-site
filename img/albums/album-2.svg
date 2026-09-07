@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
 <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#0F1830"/><stop offset="1" stop-color="#3A4A6B"/></linearGradient></defs>
+<stop offset="0" stop-color="#1A1A1A"/><stop offset="1" stop-color="#5B2B36"/></linearGradient></defs>
 <rect width="800" height="800" fill="url(#g)"/>
-<circle cx="143" cy="248" r="206" fill="#7AA0DC" opacity="0.09"/><circle cx="188" cy="718" r="230" fill="#7AA0DC" opacity="0.10"/><circle cx="81" cy="237" r="268" fill="#7AA0DC" opacity="0.12"/>
-<text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-size="128" fill="#EDF1F7" opacity="0.14">&#9835;</text>
+<text x="50%" y="46%" text-anchor="middle" font-family="Georgia,serif" font-size="176" fill="#F1E9DF" opacity="0.55">&#9835;</text>
+<text x="50%" y="58%" text-anchor="middle" font-family="sans-serif" font-size="40" fill="#F1E9DF" opacity="0.85">ალბომის ყდა 2</text>
+<text x="50%" y="64%" text-anchor="middle" font-family="sans-serif" font-size="28" fill="#F1E9DF" opacity="0.5">ჩაანაცვლეთ ფოტოთი</text>
 </svg>
