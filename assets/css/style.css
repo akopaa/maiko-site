@@ -1,29 +1,25 @@
 /* ============================================================
    Maiko Kachkachishvili — composer website
-   Design system: light ivory + charcoal text + gold accent
-   (Token names keep their original roles: --white = foreground
-    text/ink, --black = page background. Values are flipped to
-    the light palette; the LIGHT THEME ADJUSTMENTS block at the
-    end of this file fixes the few surfaces that stay dark.)
+   Design system: dark plum stage + champagne accents
    ============================================================ */
 
 :root {
-    --white: #1A1A1A;            /* primary ink / text */
-    --black: #F5F1E8;            /* ivory page background */
-    --light-white: #1A1A1A99;
-    --body: #F5F1E8;
-    --primary-color: #B08D57;    /* gold accent (deepened for light bg) */
-    --primary-soft-color: #EFE9DC;
-    --secondary-color: #B08D57;
-    --primary-title: #1A1A1A;
-    --secondary-title: #4A4949;
-    --tertiary-title: #6B6157;
-    --footer-paragraph: #6B6157;
-    --color-accent-pink: #8A5A32; /* warm brown hover */
-    --color-gray: #C9BFB0;
-    --color-border: #DED5C4;
-    --color-border-social: #ECE5D6; /* light tint for circle icons */
-    --btn-yellow: #B08D57;
+    --white: #EDE6DE;            /* cream text */
+    --black: #1A1220;            /* deep plum page background */
+    --light-white: #EDE6DE99;
+    --body: #1A1220;
+    --primary-color: #D9BE8C;    /* champagne accent */
+    --primary-soft-color: #EFE7E2;
+    --secondary-color: #D9BE8C;
+    --primary-title: #1A1220;    /* dark text on light chips */
+    --secondary-title: #C9BBCB;
+    --tertiary-title: #9A8CA0;
+    --footer-paragraph: #9A8CA0;
+    --color-accent-pink: #6E3A5F; /* mauve hover */
+    --color-gray: #4A3C50;
+    --color-border: #3A2C42;
+    --color-border-social: #241830;
+    --btn-yellow: #D9BE8C;
     --font-main: "Noto Sans Georgian", sans-serif;
     --font-serif: "Noto Serif Georgian", serif;
 }
@@ -280,7 +276,7 @@ p { font-size: 14px; }
     left: 70%;
     width: 60%;
     height: 60%;
-    background: radial-gradient(circle, rgb(231 220 92 / .4) 0, transparent 70%);
+    background: radial-gradient(circle, rgb(217 190 140 / .16) 0, transparent 70%);
     filter: blur(40px);
     z-index: -1;
 }
@@ -325,9 +321,9 @@ p { font-size: 14px; }
     transition: .9s;
     opacity: 0;
     background:
-        radial-gradient(circle at center, #1a1a1a 25%, transparent 26%),
+        radial-gradient(circle at center, #1A1220 25%, transparent 26%),
         linear-gradient(45deg, transparent 40%, rgb(255 255 255 / .1) 50%, transparent 60%),
-        repeating-radial-gradient(circle at center, #5b2b36, #5b2b36 2px, #4a232c 3px, #4a232c 4px);
+        repeating-radial-gradient(circle at center, #6E3A5F, #6E3A5F 2px, #5A2F4E 3px, #5A2F4E 4px);
     box-shadow: inset 0 0 20px rgb(0 0 0 / .5);
 }
 @keyframes spinVinyl { from { transform: translateY(-50%) rotate(0); } to { transform: translateY(-50%) rotate(360deg); } }
@@ -344,7 +340,7 @@ p { font-size: 14px; }
     margin-top: 20px;
     width: 650px;
     max-width: 92vw;
-    background: #000;
+    background: #120C18;
     color: #fff;
     padding: 20px 40px;
     justify-content: space-between;
@@ -387,7 +383,7 @@ p { font-size: 14px; }
     transform: translate(-50%, -50%);
     width: 60%;
     height: 60%;
-    background: radial-gradient(circle, rgb(231 220 92 / .4) 0, transparent 70%);
+    background: radial-gradient(circle, rgb(217 190 140 / .16) 0, transparent 70%);
     filter: blur(40px);
     z-index: -1;
     pointer-events: none;
@@ -509,7 +505,7 @@ p { font-size: 14px; }
     transform: translate(-50%, -50%);
     width: 60%;
     height: 60%;
-    background: radial-gradient(circle, rgb(231 220 92 / .4) 0, transparent 70%);
+    background: radial-gradient(circle, rgb(217 190 140 / .16) 0, transparent 70%);
     filter: blur(40px);
     z-index: -1;
     pointer-events: none;
@@ -693,7 +689,7 @@ p { font-size: 14px; }
     transform: translate(-50%, -50%);
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgb(231 220 92 / .4) 0, transparent 70%);
+    background: radial-gradient(circle, rgb(217 190 140 / .16) 0, transparent 70%);
     filter: blur(40px);
     z-index: -1;
     pointer-events: none;
@@ -756,7 +752,7 @@ p { font-size: 14px; }
     inset: -1px;
     border-radius: 50%;
     padding: 2px;
-    background: linear-gradient(45deg, #bfa081, #5b2b36);
+    background: linear-gradient(45deg, #D9BE8C, #6E3A5F);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
@@ -794,7 +790,7 @@ p { font-size: 14px; }
     transform: translate(-50%, -50%);
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgb(231 220 92 / .4) 0, transparent 70%);
+    background: radial-gradient(circle, rgb(217 190 140 / .16) 0, transparent 70%);
     filter: blur(40px);
     z-index: -1;
     pointer-events: none;
@@ -841,7 +837,7 @@ p { font-size: 14px; }
     width: 0;
     height: 2px;
     transition: .4s;
-    background: linear-gradient(to right, transparent 0, #5b2b36 50%, transparent 100%);
+    background: linear-gradient(to right, transparent 0, #6E3A5F 50%, transparent 100%);
 }
 .focus-input::after {
     content: attr(data-placeholder);
@@ -878,7 +874,7 @@ p { font-size: 14px; }
     transform: translate(-50%, -50%);
     width: 50%;
     height: 50%;
-    background: radial-gradient(circle, rgb(231 220 92 / .35) 0, transparent 70%);
+    background: radial-gradient(circle, rgb(217 190 140 / .14) 0, transparent 70%);
     filter: blur(40px);
     z-index: -1;
     pointer-events: none;
@@ -914,7 +910,7 @@ p { font-size: 14px; }
 /* ---------- footer ---------- */
 .footer-wrapper {
     position: relative;
-    background: #000 !important;
+    background: #120C18 !important;
     overflow: hidden;
 }
 .footer-wrapper::before {
@@ -935,7 +931,7 @@ p { font-size: 14px; }
     transform: translateX(-50%);
     width: 70%;
     height: 70%;
-    background: radial-gradient(ellipse at center, rgb(91 43 54 / .35) 0, transparent 65%);
+    background: radial-gradient(ellipse at center, rgb(110 58 95 / .35) 0, transparent 65%);
     pointer-events: none;
     z-index: 0;
 }
@@ -1040,9 +1036,9 @@ p { font-size: 14px; }
    Registration page — "art laboratory" style
    ============================================================ */
 .al-page {
-    --al-red-dark: #2b070c;
-    --al-red: #6e1220;
-    --al-gold: #bfa081;
+    --al-red-dark: #14091C;
+    --al-red: #3A1E44;
+    --al-gold: #D9BE8C;
     --al-cream: #fbf3e9;
     --al-cream-border: #efdfc9;
     --al-text-dark: #1a1a1a;
@@ -1060,7 +1056,7 @@ p { font-size: 14px; }
     color: #fff;
     background-color: var(--al-red);
     background-image:
-        linear-gradient(180deg, rgba(43,7,12,.93) 0, rgba(43,7,12,.78) 30%, rgba(110,18,32,.45) 55%, rgba(43,7,12,.88) 100%),
+        linear-gradient(180deg, rgba(20,9,28,.93) 0, rgba(20,9,28,.78) 30%, rgba(58,30,68,.45) 55%, rgba(20,9,28,.88) 100%),
         var(--al-photo);
     background-repeat: no-repeat;
     background-position: center top, center 15%;
@@ -1070,7 +1066,7 @@ p { font-size: 14px; }
     .al-hero {
         min-height: 560px;
         background-image:
-            linear-gradient(100deg, rgba(43,7,12,.95) 0, rgba(43,7,12,.85) 32%, rgba(110,18,32,.4) 58%, rgba(110,18,32,.05) 100%),
+            linear-gradient(100deg, rgba(20,9,28,.95) 0, rgba(20,9,28,.85) 32%, rgba(58,30,68,.4) 58%, rgba(58,30,68,.05) 100%),
             var(--al-photo);
         background-position: left top, center 20%;
     }
@@ -1096,7 +1092,7 @@ p { font-size: 14px; }
 .al-logo span { display: block; font-size: clamp(10px, .8vw, 12px); letter-spacing: 2px; color: var(--al-gold); margin-top: 6px; }
 .al-hero h1 { font-size: clamp(20px, 2.4vw, 30px); line-height: 1.35; margin: 0 0 16px; color: #fff; font-family: var(--font-serif); font-weight: 700; }
 .al-hero h1 .accent { display: block; color: var(--al-gold); }
-.al-hero p { font-size: clamp(13.5px, 1vw, 15px); line-height: 1.7; color: #f1e9dfcc; margin: 0 0 26px; max-width: 480px; }
+.al-hero p { font-size: clamp(13.5px, 1vw, 15px); line-height: 1.7; color: #EDE6DEcc; margin: 0 0 26px; max-width: 480px; }
 .al-hero__icons { display: flex; gap: clamp(16px, 2vw, 26px); flex-wrap: wrap; }
 .al-hero__icons .item {
     text-align: center;
@@ -1106,7 +1102,7 @@ p { font-size: 14px; }
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    color: #f1e9df;
+    color: #EDE6DE;
 }
 .al-hero__icons .item i {
     display: flex;
@@ -1116,7 +1112,7 @@ p { font-size: 14px; }
     height: 44px;
     margin: 0 auto 8px;
     border-radius: 50%;
-    border: 1px solid #bfa08155;
+    border: 1px solid #D9BE8C55;
     color: var(--al-gold);
     font-size: 18px;
 }
@@ -1142,7 +1138,7 @@ p { font-size: 14px; }
     margin-bottom: 14px;
     transition: border-color .2s, box-shadow .2s;
 }
-.al-field:focus-within { border-color: var(--al-gold); box-shadow: 0 0 0 3px #bfa08122; }
+.al-field:focus-within { border-color: var(--al-gold); box-shadow: 0 0 0 3px #D9BE8C22; }
 .al-field i { margin-top: 4px; color: var(--al-text-dark); font-size: 16px; flex-shrink: 0; }
 .al-field__body { flex: 1; min-width: 0; }
 .al-field label { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 2px; color: var(--al-text-dark); }
@@ -1206,7 +1202,7 @@ p { font-size: 14px; }
     align-items: center;
     justify-content: center;
     gap: 10px;
-    background: #14100e;
+    background: #14091C;
     color: var(--al-gold);
     border: none;
     border-radius: 999px;
@@ -1244,68 +1240,3 @@ p { font-size: 14px; }
     .al-alert, .al-note { margin-left: 14px; margin-right: 14px; max-width: none; }
 }
 
-/* ============================================================
-   LIGHT THEME ADJUSTMENTS
-   Fixes surfaces that were designed dark-on-light-text so they
-   read correctly on the ivory background.
-   ============================================================ */
-
-/* header: light scrim so dark links stay readable over the hero photo */
-.header-area-two::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(245,241,232,.92) 0, rgba(245,241,232,.55) 55%, rgba(245,241,232,0) 100%);
-    z-index: -1;
-    pointer-events: none;
-}
-.header-sticky.sticky-bar { box-shadow: 0 4px 18px rgb(0 0 0 / .12); }
-
-/* hero caption sits over a photograph — keep it light */
-.hero-caption-two .title,
-.hero-caption-two .pera { color: #fff; }
-.swiper-pagination-bullet { background: rgba(255,255,255,.6); }
-
-/* neutralise the dark-stage yellow glows */
-.albums-area-two::before,
-.songs-area::before,
-.events-area::before,
-.contact-area::before,
-.cooperation-area::before,
-.art-lab-area::before { display: none; }
-
-/* album audio bar -> light card */
-.audio-player-bar {
-    background: #fff;
-    color: var(--white);
-    box-shadow: 0 16px 40px rgb(0 0 0 / .12);
-}
-.player-time { color: #8A8175; }
-
-/* song list: dark overlays -> subtle dark-on-light tints */
-.song-item:hover { background: rgb(0 0 0 / .04); }
-.progress-bar { background: rgb(0 0 0 / .09); }
-.search-input-group input:focus { background: rgb(0 0 0 / .04); }
-
-/* outlined display text: light stroke -> dark stroke */
-.bg-outline-text { -webkit-text-stroke: 2px rgb(26 26 26 / .10); }
-.breadcrumb-text .title { -webkit-text-stroke: 2px rgb(26 26 26 / .14); }
-.breadcrumb-text-small .title { -webkit-text-stroke: 1px rgb(26 26 26 / .16); }
-
-/* muted body copy */
-.details-content span { color: rgb(26 26 26 / .7); }
-.content-text :is(p, span, aside, strong) { color: rgb(26 26 26 / .78); }
-.content-text li { color: rgb(26 26 26 / .78); }
-.content-text strong { color: var(--white); }
-
-/* news badge needs a light chip on the photo */
-.news-badge { background: var(--primary-color); }
-.news-badge .date { color: #fff; }
-
-/* footer -> soft cream, dark ink, gold hairline (no dark glow) */
-.footer-wrapper { background: #EDE6D8 !important; border-top: 1px solid var(--color-border); }
-.footer-wrapper::after { display: none; }
-
-/* registration academy card area sits on ivory now */
-.al-page { background: var(--black); }
