@@ -129,12 +129,13 @@ FOOTER = f'''</main>
 '''
 
 def breadcrumb(title, small=False):
-    cls = "breadcrumb-text breadcrumb-text-small" if small else "breadcrumb-text"
     tag = "h2" if small else "h1"
-    return f'''<section class="breadcrumb-section breadcrumb-bg">
-    <div class="container"><div class="row"><div class="col-lg-12">
-        <div class="{cls}"><{tag} class="title">{title}</{tag}></div>
-    </div></div></div>
+    return f'''<section class="page-head">
+    <div class="container">
+        <span class="overline">{NAME}</span>
+        <{tag} class="page-title">{title}</{tag}>
+        <div class="head-rule"></div>
+    </div>
 </section>
 '''
 
@@ -171,7 +172,6 @@ NEWS = [
 def album_slide(img, title, track):
     return f'''<div class="swiper-slide">
     <div class="albums-card-wrapper">
-        <div class="vinyl-record"></div>
         <div class="albums-img-card">
             <a href="albomi-detali.html"><img src="img/albums/{img}.svg" alt="{title}"></a>
         </div>
@@ -194,9 +194,10 @@ def album_slide(img, title, track):
 </div>
 '''
 
-def song_item(title, album_id):
+def song_item(title, album_id, idx=0):
     return f'''<li class="song-item" data-audio="" data-albums-id="{album_id}" data-title="{title}">
     <div class="song-main">
+        <span class="song-index">{idx:02d}</span>
         <button class="play-btn"><i class="ri-play-fill"></i></button>
         <div class="song-info">
             <h2 class="song-title">{title}</h2>
@@ -246,37 +247,35 @@ def news_card(img, title, date):
 pages = {}
 
 # ============================ INDEX ============================
-hero_slides = "".join(f'''<div class="swiper-slide">
-    <div class="cover-bg" style="background-image:url('img/slider/cover-{i}.svg')"></div>
-    <div class="container">
-        <div class="swiper-cover">
-            <div class="slider-content">
-                <div class="hero-caption-two">
-                    <h1 class="title">{NAME}</h1>
-                    <h2 class="pera">{ROLE}</h2>
-                </div>
-            </div>
-            <img class="banner-img-cover" src="img/slider/cover-{i}.svg" alt="{NAME}">
-        </div>
-    </div>
-</div>
-''' for i in (1, 2))
-
 pages["index.html"] = (
     head(f"{NAME} — {ROLE} და მუსიკალური აკადემია | ოფიციალური საიტი",
-         f"{NAME_GEN} ოფიციალური ვებგვერდი. ბიოგრაფია, შემოქმედება, მუსიკალური აკადემია და პროექტები.")
+         f"{NAME}-ის ოფიციალური ვებგვერდი. ბიოგრაფია, შემოქმედება, მუსიკალური აკადემია და პროექტები.")
     + header()
-    + f'''<section class="hero-area-two slider-cover">
-    <div class="hero-slider-two swiper heroSwiperTwo-active">
-        <div class="swiper-wrapper">
-{hero_slides}
+    + f'''<section class="hero-split">
+    <div class="container">
+        <div class="hero-grid">
+            <div class="hero-text">
+                <span class="overline">{ROLE}</span>
+                <h1>მაიკო<br>კაჭკაჭიშვილი</h1>
+                <div class="head-rule"></div>
+                <p>კომპოზიტორი და მუსიკალური აკადემიის დამფუძნებელი</p>
+                <div class="hero-actions">
+                    <a href="registracia.html" class="btn-solid">აკადემიაში რეგისტრაცია</a>
+                    <a href="shemokmedeba.html" class="btn-ghost">შემოქმედება</a>
+                </div>
+            </div>
+            <div class="hero-portrait">
+                <img src="img/slider/cover-1.svg" alt="{NAME}">
+            </div>
         </div>
-        <div class="swiper-pagination"></div>
     </div>
 </section>
 
 <section class="albums-area-two section-padding">
-    <h2 class="bg-outline-text">ალბომები</h2>
+    <div class="section-head container">
+        <span class="overline">დისკოგრაფია</span>
+        <h2 class="section-title">ალბომები</h2>
+    </div>
     <div class="swiper albumsSwiper-active">
         <div class="swiper-wrapper">
 {"".join(album_slide(i, t, tr) for i, t, tr in ALBUMS)}
@@ -287,7 +286,10 @@ pages["index.html"] = (
 
 <section class="songs-area section-padding">
     <div class="container">
-        <h2 class="bg-outline-text">შემოქმედება</h2>
+        <div class="section-head">
+            <span class="overline">მუსიკა</span>
+            <h2 class="section-title">შემოქმედება</h2>
+        </div>
         <div class="row">
             <div class="col-xl-4">
                 <div class="songs-content fade-up">
@@ -303,7 +305,7 @@ pages["index.html"] = (
             <div class="col-xl-8">
                 <div class="songs fade-up">
                     <ul>
-{"".join(song_item(t, a) for t, a in SONGS)}
+{"".join(song_item(t, a, i) for i, (t, a) in enumerate(SONGS, 1))}
                     </ul>
                 </div>
             </div>
@@ -421,7 +423,7 @@ pages["shemokmedeba.html"] = (
                 </div>
                 <div class="songs song-detail">
                     <ul>
-{"".join(song_item(t, a) for t, a in SONGS)}
+{"".join(song_item(t, a, i) for i, (t, a) in enumerate(SONGS, 1))}
                     </ul>
                 </div>
             </div>
@@ -695,7 +697,6 @@ pages["albomi-detali.html"] = (
                 <div class="row g-4 align-items-start">
                     <div class="col-xl-6 col-lg-12 order-xl-first">
                         <div class="albums-card-wrapper mx-auto">
-                            <div class="vinyl-record" style="opacity:1;right:-32%;animation:spinVinyl 8s linear infinite;"></div>
                             <div class="albums-img-card">
                                 <img src="img/albums/album-1.svg" alt="ალბომი">
                             </div>
@@ -711,7 +712,7 @@ pages["albomi-detali.html"] = (
                         </div>
                         <div class="songs song-detail">
                             <ul>
-{"".join(song_item(t, a) for t, a in SONGS[:4])}
+{"".join(song_item(t, a, i) for i, (t, a) in enumerate(SONGS[:4], 1))}
                             </ul>
                         </div>
                     </div>
