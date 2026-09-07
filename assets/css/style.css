@@ -1,25 +1,29 @@
 /* ============================================================
    Maiko Kachkachishvili — composer website
-   Design system: dark stage + cream & gold accents
+   Design system: light ivory + charcoal text + gold accent
+   (Token names keep their original roles: --white = foreground
+    text/ink, --black = page background. Values are flipped to
+    the light palette; the LIGHT THEME ADJUSTMENTS block at the
+    end of this file fixes the few surfaces that stay dark.)
    ============================================================ */
 
 :root {
-    --white: #F1E9DF;
-    --black: #1A1A1A;
-    --light-white: #FFFFFF99;
-    --body: #F1E9DF;
-    --primary-color: #BFA081;
-    --primary-soft-color: #F4F2EE;
-    --secondary-color: #BFA081;
+    --white: #1A1A1A;            /* primary ink / text */
+    --black: #F5F1E8;            /* ivory page background */
+    --light-white: #1A1A1A99;
+    --body: #F5F1E8;
+    --primary-color: #B08D57;    /* gold accent (deepened for light bg) */
+    --primary-soft-color: #EFE9DC;
+    --secondary-color: #B08D57;
     --primary-title: #1A1A1A;
     --secondary-title: #4A4949;
-    --tertiary-title: #696969;
-    --footer-paragraph: #B4A4A4;
-    --color-accent-pink: #5B2B36;
-    --color-gray: #444;
-    --color-border: #2f2f2f;
-    --color-border-social: #1d1d1d;
-    --btn-yellow: #C5B820;
+    --tertiary-title: #6B6157;
+    --footer-paragraph: #6B6157;
+    --color-accent-pink: #8A5A32; /* warm brown hover */
+    --color-gray: #C9BFB0;
+    --color-border: #DED5C4;
+    --color-border-social: #ECE5D6; /* light tint for circle icons */
+    --btn-yellow: #B08D57;
     --font-main: "Noto Sans Georgian", sans-serif;
     --font-serif: "Noto Serif Georgian", serif;
 }
@@ -1239,3 +1243,69 @@ p { font-size: 14px; }
     .al-form-card { margin: -140px 14px 0; max-width: none; }
     .al-alert, .al-note { margin-left: 14px; margin-right: 14px; max-width: none; }
 }
+
+/* ============================================================
+   LIGHT THEME ADJUSTMENTS
+   Fixes surfaces that were designed dark-on-light-text so they
+   read correctly on the ivory background.
+   ============================================================ */
+
+/* header: light scrim so dark links stay readable over the hero photo */
+.header-area-two::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(245,241,232,.92) 0, rgba(245,241,232,.55) 55%, rgba(245,241,232,0) 100%);
+    z-index: -1;
+    pointer-events: none;
+}
+.header-sticky.sticky-bar { box-shadow: 0 4px 18px rgb(0 0 0 / .12); }
+
+/* hero caption sits over a photograph — keep it light */
+.hero-caption-two .title,
+.hero-caption-two .pera { color: #fff; }
+.swiper-pagination-bullet { background: rgba(255,255,255,.6); }
+
+/* neutralise the dark-stage yellow glows */
+.albums-area-two::before,
+.songs-area::before,
+.events-area::before,
+.contact-area::before,
+.cooperation-area::before,
+.art-lab-area::before { display: none; }
+
+/* album audio bar -> light card */
+.audio-player-bar {
+    background: #fff;
+    color: var(--white);
+    box-shadow: 0 16px 40px rgb(0 0 0 / .12);
+}
+.player-time { color: #8A8175; }
+
+/* song list: dark overlays -> subtle dark-on-light tints */
+.song-item:hover { background: rgb(0 0 0 / .04); }
+.progress-bar { background: rgb(0 0 0 / .09); }
+.search-input-group input:focus { background: rgb(0 0 0 / .04); }
+
+/* outlined display text: light stroke -> dark stroke */
+.bg-outline-text { -webkit-text-stroke: 2px rgb(26 26 26 / .10); }
+.breadcrumb-text .title { -webkit-text-stroke: 2px rgb(26 26 26 / .14); }
+.breadcrumb-text-small .title { -webkit-text-stroke: 1px rgb(26 26 26 / .16); }
+
+/* muted body copy */
+.details-content span { color: rgb(26 26 26 / .7); }
+.content-text :is(p, span, aside, strong) { color: rgb(26 26 26 / .78); }
+.content-text li { color: rgb(26 26 26 / .78); }
+.content-text strong { color: var(--white); }
+
+/* news badge needs a light chip on the photo */
+.news-badge { background: var(--primary-color); }
+.news-badge .date { color: #fff; }
+
+/* footer -> soft cream, dark ink, gold hairline (no dark glow) */
+.footer-wrapper { background: #EDE6D8 !important; border-top: 1px solid var(--color-border); }
+.footer-wrapper::after { display: none; }
+
+/* registration academy card area sits on ivory now */
+.al-page { background: var(--black); }
