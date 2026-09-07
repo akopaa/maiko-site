@@ -468,7 +468,8 @@ pages["registracia.html"] = (
          f"დარეგისტრირდით {NAME_GEN} მუსიკალურ აკადემიაში.")
     + header("registracia.html")
     + f'''<div class="al-page">
-<section class="al-hero" style="--al-photo: url('/img/slider/cover-1.svg')">
+<style>.al-hero {{ --al-photo: url('img/slider/cover-1.svg'); }}</style>
+<section class="al-hero">
     <div class="al-hero__inner">
         <h1>{NAME_GEN} მუსიკალური აკადემია</h1>
         <div class="al-logo">
